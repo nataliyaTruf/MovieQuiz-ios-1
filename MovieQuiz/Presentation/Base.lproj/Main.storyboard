@@ -26,7 +26,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="iYt-dV-iOk">
-                                <rect key="frame" x="20" y="37" width="350" height="773"/>
+                                <rect key="frame" x="20" y="57" width="350" height="753"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Doy-2h-pzV">
                                         <rect key="frame" x="0.0" y="0.0" width="350" height="23.666666666666668"/>
@@ -58,13 +58,13 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Рейтинг этого фильма меньше чем 5?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fDY-kt-fDz" userLabel="Question Label">
-                                        <rect key="frame" x="0.0" y="588.66666666666663" width="350" height="104.33333333333337"/>
+                                        <rect key="frame" x="0.0" y="588.66666666666663" width="350" height="84.333333333333371"/>
                                         <fontDescription key="fontDescription" name="YSDisplay-Bold" family="YS Display" pointSize="23"/>
                                         <color key="textColor" name="YP White"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="9aG-GK-c6I">
-                                        <rect key="frame" x="0.0" y="713" width="350" height="60"/>
+                                        <rect key="frame" x="0.0" y="693" width="350" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0i-vA-3sI" userLabel="No Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="165" height="60"/>
@@ -117,7 +117,7 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iYt-dV-iOk" secondAttribute="trailing" constant="20" id="N68-wj-OjL"/>
                             <constraint firstItem="iYt-dV-iOk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="bd6-II-qWM"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="iYt-dV-iOk" secondAttribute="top" constant="10" id="leJ-o6-qV6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="iYt-dV-iOk" secondAttribute="top" constant="-10" id="leJ-o6-qV6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="iYt-dV-iOk" secondAttribute="bottom" id="w5E-7o-Q4j"/>
                         </constraints>
                     </view>
