@@ -13,7 +13,6 @@ protocol QuestionFactoryProtocol {
     func loadData()
 }
 
-
 final class QuestionFactory {
     
     // MARK: - Prorerties

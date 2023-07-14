@@ -1,15 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-    func didLoadDataFromServer() {
-        activityIndicator.isHidden = true
-        questionFactory?.requestNextQuestion()
-    }
-    
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
-    }
-    
+final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
@@ -34,31 +25,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         
         imageView.layer.cornerRadius = 20
+        
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticServiceImpl()
+        alertPresenter = AlertPresenterImpl(viewController: self)
         
         showLoadingIndicator()
         questionFactory?.loadData()
-        
-        alertPresenter = AlertPresenterImpl(viewController: self)
-        
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-    }
-    
-    // MARK: - QuestionFactoryDelegate
-    
-    func didRecieveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else { return }
-        
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
     }
     
     // MARK: - Private functions
@@ -133,7 +110,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showFinalResults() {
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
         
-        
         let alertModel = AlertModel(
             title: "Этот раунд окончен!",
             message: makeResultMessage(),
@@ -195,4 +171,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         )
         alertPresenter?.show(alertModel: alertModel)
     }    
+}
+
+// MARK: QuestionFactoryDelegate
+
+extension MovieQuizViewController: QuestionFactoryDelegate {
+    
+     func didLoadDataFromServer() {
+         activityIndicator.isHidden = true
+         questionFactory?.requestNextQuestion()
+     }
+     
+     func didFailToLoadData(with error: Error) {
+         showNetworkError(message: error.localizedDescription)
+     }
+    
+    func didRecieveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else { return }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
+    
 }
