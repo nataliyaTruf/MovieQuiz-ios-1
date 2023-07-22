@@ -35,14 +35,10 @@ final class MovieQuizViewController: UIViewController {
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
         presenter.noButtonClicked()
-        //        yesButton.isEnabled = false
-        //        noButton.isEnabled = false
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
         presenter.yesButtonClicked()
-        //        yesButton.isEnabled = false
-        //        noButton.isEnabled = false
     }
     
     func show(quiz step: QuizStepViewModel) {
@@ -51,27 +47,28 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
     }
     
-    func showAnswerResult(isCorrect: Bool) {
-        presenter.didAnswer(isCorrectAnswer: isCorrect)
-        
+    func highlightImageBorder(isCorrectAnswer: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+    }
+    
+    func hideImageBorder() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak self] in
             guard let self = self else { return }
-            self.presenter.showNextQuestionOrResults()
+            self.imageView.layer.borderWidth = 0
         }
     }
     
-    //    private func showNextQuestionOrResults() {
-    //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-    //            guard let self = self else { return }
-    //            self.imageView.layer.borderWidth = 0
-    //            self.yesButton.isEnabled = true
-    //            self.noButton.isEnabled = true
-    //        }
-    //    }
+    func buttonsUnlocked() {
+        self.yesButton.isEnabled = true
+        self.noButton.isEnabled = true
+    }
+    
+    func buttonsLocked() {
+        self.yesButton.isEnabled = false
+        self.noButton.isEnabled = false
+    }
     
     func showFinalResults() {
         let message = presenter.makeResultMessage()
@@ -114,22 +111,3 @@ final class MovieQuizViewController: UIViewController {
         alertPresenter?.show(alertModel: alertModel)
     }
 }
-//
-//// MARK: QuestionFactoryDelegate
-//
-//extension MovieQuizViewController: QuestionFactoryDelegate {
-//
-//     func didLoadDataFromServer() {
-//         activityIndicator.isHidden = true
-//         questionFactory?.requestNextQuestion()
-//     }
-//
-//     func didFailToLoadData(with error: Error) {
-//         showNetworkError(message: error.localizedDescription)
-//     }
-//
-//    func didRecieveNextQuestion(question: QuizQuestion?) {
-//        presenter.didRecieveNextQuestion(question: question)
-//    }
-//
-//}

@@ -45,6 +45,8 @@ final class MovieQuizPresenter {
         currentQuestionIndex = 0
         correctAnswers = 0
         questionFactory?.requestNextQuestion()
+        viewController?.hideImageBorder()
+        viewController?.buttonsUnlocked()
     }
     
     func switchToNextQuestion() {
@@ -59,10 +61,12 @@ final class MovieQuizPresenter {
     
     func noButtonClicked() {
         didAnswer(isYes: false)
+        viewController?.buttonsLocked()
     }
     
     func yesButtonClicked() {
         didAnswer(isYes: true)
+        viewController?.buttonsLocked()
     }
     
     private func didAnswer(isYes: Bool) {
@@ -71,23 +75,31 @@ final class MovieQuizPresenter {
         }
         let givenAnswer = isYes
         
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        proceedWithAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    func showNextQuestionOrResults() {
+    func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() {
             viewController?.showFinalResults()
         } else {
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
+            viewController?.hideImageBorder()
+            viewController?.buttonsUnlocked()
         }
-        //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-        //            guard let self = self else { return }
-        //            self.imageView.layer.borderWidth = 0
-        //            self.yesButton.isEnabled = true
-        //            self.noButton.isEnabled = true
-        //        }
     }
+    
+    func proceedWithAnswerResult(isCorrect: Bool) {
+        didAnswer(isCorrectAnswer: isCorrect)
+        
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            self.proceedToNextQuestionOrResults()
+        }
+    }
+    
     
     func makeResultMessage() -> String {
         statisticService?.store(correct: correctAnswers, total: questionsAmount)
@@ -109,7 +121,6 @@ final class MovieQuizPresenter {
         """
         return resultMessage
     }
-    
 }
 
 // MARK: QuestionFactoryDelegate
