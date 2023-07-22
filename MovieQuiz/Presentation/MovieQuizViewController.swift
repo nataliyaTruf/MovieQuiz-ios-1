@@ -23,6 +23,8 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        presenter.viewController = self
+        
         imageView.layer.cornerRadius = 20
         
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -40,25 +42,17 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Private functions
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
+//        yesButton.isEnabled = false
+//        noButton.isEnabled = false
     }
     
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
+//        yesButton.isEnabled = false
+//        noButton.isEnabled = false
     }
 
     private func show(quiz step: QuizStepViewModel) {
@@ -67,7 +61,7 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
         }
@@ -143,6 +137,7 @@ final class MovieQuizViewController: UIViewController {
     private func hideLoadingIndicator() {
         activityIndicator.isHidden = true
     }
+    
 
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
