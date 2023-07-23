@@ -106,7 +106,25 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
             completion: { [weak self] in
                 guard let self = self else { return }
                 
+                self.showLoadingIndicator()
                 self.presenter.restartGame()
+                self.presenter.questionFactory?.loadData()
+            }
+        )
+        alertPresenter?.show(alertModel: alertModel)
+    }
+    
+    func showImageLoadingError(message: String) {
+        hideLoadingIndicator()
+        
+        let alertModel = AlertModel(
+            title: "Ошибка",
+            message: message,
+            buttonText: "Попробовать еще раз",
+            completion: { [weak self] in
+                guard let self = self else { return }
+                self.showLoadingIndicator()
+                self.presenter.questionFactory?.loadData()
             }
         )
         alertPresenter?.show(alertModel: alertModel)

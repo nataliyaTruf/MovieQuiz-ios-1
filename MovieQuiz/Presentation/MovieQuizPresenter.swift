@@ -10,7 +10,7 @@ import UIKit
 final class MovieQuizPresenter {
     
     private weak var viewController: MovieQuizViewControllerProtocol?
-    private var questionFactory: QuestionFactoryProtocol?
+   var questionFactory: QuestionFactoryProtocol?
     private let statisticService: StatisticService?
     
     private var currentQuestionIndex: Int = 0
@@ -30,7 +30,6 @@ final class MovieQuizPresenter {
     
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
-        
         return QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
@@ -61,11 +60,13 @@ final class MovieQuizPresenter {
     
     func noButtonClicked() {
         didAnswer(isYes: false)
+        viewController?.showLoadingIndicator()
         viewController?.buttonsLocked()
     }
     
     func yesButtonClicked() {
         didAnswer(isYes: true)
+        viewController?.showLoadingIndicator()
         viewController?.buttonsLocked()
     }
     
@@ -126,7 +127,11 @@ final class MovieQuizPresenter {
 // MARK: QuestionFactoryDelegate
 
 extension MovieQuizPresenter: QuestionFactoryDelegate {
-    
+    func didFailToLoadImage(with error: Error) {
+        let message = "Не удалось загрузить изображение"
+        viewController?.showImageLoadingError(message: message)
+    }
+
     func didLoadDataFromServer() {
         viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
@@ -146,6 +151,7 @@ extension MovieQuizPresenter: QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.show(quiz: viewModel)
         }
+      viewController?.hideLoadingIndicator()
     }
 }
 

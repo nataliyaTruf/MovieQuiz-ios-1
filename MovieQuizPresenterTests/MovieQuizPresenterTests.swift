@@ -8,7 +8,7 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
-
+  
     func show(quiz step: QuizStepViewModel) {
     
     }
@@ -33,13 +33,19 @@ final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
     }
     
     func buttonsLocked() {
+        
     }
     
     func buttonsUnlocked() {
+        
     }
     
     func showNetworkError(message: String) {
     
+    }
+    
+    func showImageLoadingError(message: String) {
+        
     }
 }
 
