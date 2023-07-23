@@ -28,6 +28,8 @@ extension AlertPresenterImpl: AlertPresenter {
             preferredStyle: .alert
         )
         
+        alert.view.accessibilityIdentifier = "Alert"
+        
         let action = UIAlertAction(title: alertModel.buttonText, style: .default) { _ in
             
             alertModel.completion?()
